@@ -1,6 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import GuestRoute from './routes/GuestRoute';
+import UserRoute from './routes/UserRoute';
+
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -12,23 +15,55 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: true
+      authenticated: false
     };
   }
+
+  componentWillMount() {
+    if (localStorage.getItem('TOKEN')) this.setState({ authenticated: true });
+  }
+
+  onLogout = () => {
+    this.setState({ authenticated: false });
+  };
+  onLogin = () => {
+    this.setState({ authenticated: true });
+  };
 
   render() {
     const { authenticated } = this.state;
     return (
       <Fragment>
         <Route
-          render={props => <Navbar {...props} authenticated={authenticated} />}
+          render={props => (
+            <Navbar
+              {...props}
+              authenticated={authenticated}
+              onLogout={this.onLogout}
+            />
+          )}
         />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/signup" exact component={Signup} />
-          <Route path="/polls" exact component={Polls} />
-          <Route path="/newpoll" exact component={NewPoll} />
+          <GuestRoute
+            path="/login"
+            exact
+            onLogin={this.onLogin}
+            component={Login}
+            authenticated={authenticated}
+          />
+          <GuestRoute
+            path="/signup"
+            exact
+            component={Signup}
+            authenticated={authenticated}
+          />
+          <UserRoute
+            path="/newpoll"
+            exact
+            component={NewPoll}
+            authenticated={authenticated}
+          />
 
           <Navbar />
         </Switch>

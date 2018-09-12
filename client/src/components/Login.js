@@ -4,42 +4,110 @@ import {
   Grid,
   Form,
   Button,
-  Segment,
   Header,
-  Image,
-  Message
+  Message,
+  Icon
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import Validator from 'validator';
+import axios from 'axios';
 
-import Navbar from './Navbar';
+import InlineError from '../messages/InlineError';
 
 export default class Login extends Component {
+  state = {
+    data: {
+      username: '',
+      email: '',
+      password: ''
+    },
+    loading: false,
+    errors: {}
+  };
+
+  onChange = e =>
+    this.setState({
+      data: { ...this.state.data, [e.target.name]: e.target.value }
+    });
+
+  onSubmit = () => {
+    const errors = this.validate(this.state.data);
+    this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      this.setState({ loading: true });
+      console.log(this.state);
+
+      axios
+        .post('http://localhost:8080/login', this.state.data)
+        .then(res => {
+          localStorage.setItem('TOKEN', res.data.token);
+          this.props.onLogin();
+          this.setState({ loading: false });
+          this.props.history.push('/');
+        })
+        .catch(err =>
+          this.setState({
+            errors: { message: err.response.data },
+            loading: false
+          })
+        );
+    }
+  };
+
+  validate = data => {
+    const errors = {};
+    if (Validator.isEmpty(data.username))
+      errors.username = "Username can't be empty";
+    if (Validator.isEmpty(data.password))
+      errors.password = "Password can't be empty";
+
+    return errors;
+  };
+
   render() {
+    const { data, errors, loading } = this.state;
+
     return (
       <Grid
         textAlign="center"
         style={{ height: '100%', padding: '2em' }}
         verticalAlign="middle"
       >
-        <Grid.Column style={{ maxWidth: 450 }}>
+        <Grid.Column style={{ maxWidth: 450 }} textAlign="left">
           <Header as="h2" color="blue" textAlign="center">
             Log-in to your account
           </Header>
-          <Form size="large">
-            <Form.Input
-              fluid
-              icon="user"
-              iconPosition="left"
-              placeholder="E-mail address"
-            />
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Password"
-              type="password"
-            />
-
+          <Form size="large" onSubmit={this.onSubmit} loading={loading}>
+            {errors.message && (
+              <Message negative>
+                <Message.Header>Something went wrong</Message.Header>
+                <p>{errors.message}</p>
+              </Message>
+            )}{' '}
+            <Form.Field error={!!errors.username}>
+              <Input
+                icon="user"
+                iconPosition="left"
+                name="username"
+                placeholder="User name"
+                value={data.username}
+                onChange={this.onChange}
+              />
+              {errors.username && <InlineError text={errors.username} />}
+            </Form.Field>
+            <Form.Field error={!!errors.password}>
+              <Input
+                fluid
+                icon="lock"
+                name="password"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                value={data.password}
+                onChange={this.onChange}
+              />
+              {errors.password && <InlineError text={errors.password} />}
+            </Form.Field>
             <Button color="blue" fluid size="large">
               Login
             </Button>

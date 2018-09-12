@@ -19,6 +19,8 @@ export default class Navbar extends Component {
   unStickTopMenu = () => this.setState({ menuFixed: false });
 
   logout = () => {
+    localStorage.removeItem('TOKEN');
+    this.props.onLogout();
     this.props.history.push('/');
   };
 
