@@ -31,7 +31,7 @@ schema.methods.isValidToken = function isValidToken(token) {
 
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign(
-    { username: this.username, isConfirmed: this.confirmed },
+    { email: this.email, username: this.username, isConfirmed: this.confirmed },
     process.env.JWT_SECRET
   );
 };

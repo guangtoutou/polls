@@ -12,6 +12,7 @@ import api from './api';
 import parseErrors from './utils/parseError';
 import { sendConfirmationEmail, sendResetPasswordEmail } from './mailer';
 import books from './routes/books';
+import polls from './routes/polls';
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use(
 );
 
 app.use('/books', books);
+app.use('/polls', polls);
 
 app.post('/login', (req, res) => {
   const credentials = req.body;
