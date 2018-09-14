@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 import GuestRoute from './routes/GuestRoute';
 import UserRoute from './routes/UserRoute';
@@ -10,24 +11,46 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Polls from './components/Polls';
 import NewPoll from './components/NewPoll';
+import setAuthorizationHeader from './utils/setAuthorizationHeader';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authenticated: false
+      authenticated: false,
+      username: null,
+      email: null
     };
   }
 
-  componentWillMount() {
-    if (localStorage.getItem('TOKEN')) this.setState({ authenticated: true });
+  componentDidlMount() {
+    let token = localStorage.getItem('TOKEN');
+    if (token) {
+      setAuthorizationHeader(token);
+      const user = jwt.decode(token);
+      this.setState({
+        email: user.email,
+        username: user.username,
+        authenticated: true
+      });
+    }
   }
 
   onLogout = () => {
     this.setState({ authenticated: false });
+    setAuthorizationHeader();
   };
-  onLogin = () => {
+
+  onLogin = token => {
     this.setState({ authenticated: true });
+    setAuthorizationHeader(token);
+    const user = jwt.decode(token);
+    this.setState({
+      email: user.email,
+      username: user.username,
+      authenticated: true
+    });
+    this.props.history.push('/');
   };
 
   render() {

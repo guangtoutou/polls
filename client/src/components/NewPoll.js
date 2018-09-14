@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
 import {
   Button,
-  Menu,
-  Container,
-  Visibility,
   Header,
   Form,
-  Radio,
-  Icon,
-  Item,
   Input,
   Select,
   TextArea,
-  Checkbox,
-  Image,
-  Segment,
-  Grid,
-  Dropdown
+  Grid
 } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import Validator from 'validator';
+import axios from 'axios';
 
 const days = Array.from(Array(24).keys()).map(day => ({
   key: day,
@@ -31,25 +22,110 @@ const hours = Array.from(Array(24).keys()).map(hour => ({
   text: hour,
   value: hour
 }));
+
 export default class NewPoll extends Component {
-  state = { disabled: true, loading: false };
+  state = {
+    disabled: true,
+    loading: false,
+    data: {
+      question: '',
+      choices: ['', ''],
+      days: 0,
+      hours: 0
+    }
+  };
+
+  onChange = e => {
+    let newState = { ...this.state.data, [e.target.name]: e.target.value };
+    let hasEmptyField = this.hasEmptyField(newState);
+
+    this.setState({
+      data: newState,
+      disabled: hasEmptyField
+    });
+  };
+
+  onChangeChoice = (index, e) => {
+    let { choices } = this.state.data;
+    choices[index] = e.target.value;
+    let newState = { ...this.state.data, choices };
+    let hasEmptyField = this.hasEmptyField(newState);
+
+    this.setState({
+      data: newState,
+      disabled: hasEmptyField
+    });
+  };
+
+  onSubmit = () => {
+    this.setState({ loading: true });
+
+    axios
+      .post('http://localhost:8080/polls', {
+        ...this.state.data,
+        expiredAt: new Date()
+      })
+      .then(res => {
+        this.props.history.push('/');
+      })
+      .catch(err =>
+        this.setState({
+          errors: { message: err.response.data },
+          loading: false
+        })
+      );
+  };
+
+  hasEmptyField = newState => {
+    let hasEmptyChoices = newState.choices
+      .map(choice => Validator.isEmpty(choice))
+      .reduce((acc, cur) => acc || cur);
+    if (!Validator.isEmpty(newState.question) && !hasEmptyChoices) return false;
+
+    return true;
+  };
+
+  addChoice = () => {
+    let { choices } = this.state.data;
+    choices.push('');
+    this.setState({
+      data: { ...this.state.data, choices }
+    });
+  };
 
   render() {
-    const { disabled, loading, value } = this.state;
+    const { disabled, loading, data } = this.state;
+    console.log(data);
 
     return (
       <Grid textAlign="center" style={{ height: '100%', padding: '2em' }}>
         <Grid.Column style={{ maxWidth: 500 }} textAlign="left">
-          <Form>
+          <Form loading={loading}>
             <Header>Create Poll</Header>
-            <Form.Field control={TextArea} placeholder="Enter your question" />
-            <Form.Field control={Input} placeholder="Choice 1" />
-            <Form.Field control={Input} placeholder="Choice 2" />
+            <Form.Field
+              control={TextArea}
+              placeholder="Enter your question"
+              icon="user"
+              name="question"
+              value={data.question}
+              onChange={this.onChange}
+            />
+            {data.choices.map((option, index) => (
+              <Form.Field
+                control={Input}
+                placeholder={option}
+                key={index}
+                name={index}
+                value={option}
+                onChange={e => this.onChangeChoice(index, e)}
+              />
+            ))}
             <Form.Button
               icon="plus"
               content="Add a choice"
               basic
               style={{ border: 'dashed 1px grey', boxShadow: 'none' }}
+              onClick={this.addChoice}
             />
             <Form.Group inline>
               <span style={{ margin: '0 1em 0 0' }}>Poll Length:</span>
@@ -68,7 +144,13 @@ export default class NewPoll extends Component {
               />
               <span style={{ margin: '0 1em 0 0' }}>Hours</span>
             </Form.Group>
-            <Button color="blue" fluid size="large" disabled={disabled}>
+            <Button
+              color="blue"
+              fluid
+              size="large"
+              disabled={disabled}
+              onClick={this.onSubmit}
+            >
               Create Poll
             </Button>
           </Form>

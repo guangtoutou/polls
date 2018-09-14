@@ -40,10 +40,8 @@ export default class Login extends Component {
       axios
         .post('http://localhost:8080/login', this.state.data)
         .then(res => {
-          localStorage.setItem('TOKEN', res.data.token);
-          this.props.onLogin();
+          this.props.onLogin(res.data.token);
           this.setState({ loading: false });
-          this.props.history.push('/');
         })
         .catch(err =>
           this.setState({
