@@ -5,7 +5,13 @@ import uniqueValidator from 'mongoose-unique-validator';
 const schema = new mongoose.Schema(
   {
     question: { type: String },
-    choices: [{ type: String }],
+    choices: [
+      {
+        title: String,
+        count: { type: Number, default: 0 },
+        votes: [{ userId: mongoose.Schema.Types.ObjectId, voteDate: Date }]
+      }
+    ],
     expired: { type: Boolean, default: false },
     expiredAt: { type: Date },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true }

@@ -38,7 +38,7 @@ const Poll = ({ poll }) => (
     <Form>
       <Form.Field>
         {poll.choices.map((choice, index) => (
-          <Form.Field key={index} control={Radio} label={choice} />
+          <Form.Field key={index} control={Radio} label={choice.title} />
         ))}
       </Form.Field>
       <Button content="Vote" color="blue" basic />

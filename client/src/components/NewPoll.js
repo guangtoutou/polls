@@ -29,7 +29,7 @@ export default class NewPoll extends Component {
     loading: false,
     data: {
       question: '',
-      choices: ['', ''],
+      choices: [{ title: '' }, { title: '' }],
       days: 0,
       hours: 0
     }
@@ -47,7 +47,7 @@ export default class NewPoll extends Component {
 
   onChangeChoice = (index, e) => {
     let { choices } = this.state.data;
-    choices[index] = e.target.value;
+    choices[index].title = e.target.value;
     let newState = { ...this.state.data, choices };
     let hasEmptyField = this.hasEmptyField(newState);
 
@@ -78,7 +78,7 @@ export default class NewPoll extends Component {
 
   hasEmptyField = newState => {
     let hasEmptyChoices = newState.choices
-      .map(choice => Validator.isEmpty(choice))
+      .map(choice => Validator.isEmpty(choice.title))
       .reduce((acc, cur) => acc || cur);
     if (!Validator.isEmpty(newState.question) && !hasEmptyChoices) return false;
 
@@ -87,7 +87,7 @@ export default class NewPoll extends Component {
 
   addChoice = () => {
     let { choices } = this.state.data;
-    choices.push('');
+    choices.push({ title: '' });
     this.setState({
       data: { ...this.state.data, choices }
     });
@@ -113,10 +113,10 @@ export default class NewPoll extends Component {
             {data.choices.map((option, index) => (
               <Form.Field
                 control={Input}
-                placeholder={option}
+                placeholder={option.title}
                 key={index}
                 name={index}
-                value={option}
+                value={option.title}
                 onChange={e => this.onChangeChoice(index, e)}
               />
             ))}
