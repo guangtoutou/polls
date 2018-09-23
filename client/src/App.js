@@ -78,6 +78,7 @@ class App extends Component {
           <GuestRoute
             path="/signup"
             exact
+            onSignup={this.onLogin}
             component={Signup}
             authenticated={authenticated}
           />

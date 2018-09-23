@@ -9,7 +9,7 @@ const schema = new mongoose.Schema(
       {
         title: String,
         count: { type: Number, default: 0 },
-        votes: [{ userId: mongoose.Schema.Types.ObjectId, voteDate: Date }]
+        votes: [{ userId: mongoose.Schema.Types.ObjectId, voteAt: Date }]
       }
     ],
     expired: { type: Boolean, default: false },

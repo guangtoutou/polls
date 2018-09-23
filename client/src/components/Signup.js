@@ -11,6 +11,7 @@ import {
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
+import axios from 'axios';
 
 import Navbar from './Navbar';
 import InlineError from '../messages/InlineError';
@@ -37,17 +38,25 @@ export default class Signup extends Component {
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      this.props.submit(this.state.data).catch(err =>
-        this.setState({
-          errors: { message: err.response.data },
-          loading: false
+      axios
+        .post('http://localhost:8080/signup', this.state.data)
+        .then(res => {
+          this.props.onSignup(res.data.token);
+          this.setState({ loading: false });
         })
-      );
+        .catch(err =>
+          this.setState({
+            errors: { message: err.response.data },
+            loading: false
+          })
+        );
     }
   };
 
   validate = data => {
     const errors = {};
+    if (Validator.isEmpty(data.fullname))
+      errors.fullname = "Full name can't be empty";
     if (Validator.isEmpty(data.username))
       errors.username = "Username can't be empty";
     if (Validator.isEmpty(data.password))
