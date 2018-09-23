@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
-export default function(errors) {
-  const result = {};
-
-  return errors.username.message;
+export default function(errorMessage) {
+  return {
+    confirmation: 'fail',
+    message: errorMessage
+  };
 }

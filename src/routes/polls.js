@@ -4,7 +4,8 @@ import request from 'request-promise';
 import { parseString } from 'xml2js';
 import parseErrors from '../utils/parseError';
 import Poll from '../models/Poll';
-import Vote from '../models/Vote';
+
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -23,9 +24,20 @@ router.post('/', (req, res) => {
 });
 
 router.post('/vote', (req, res) => {
-  Vote.create({ ...req.body, userId: req.currentUser._id })
-    .then(vote => res.json({ vote }))
-    .catch(err => res.status(400).json({ errors: parseErrors(err.errors) }));
+  Poll.update(
+    {
+      _id: req.body.pollId,
+      choices: { $elemMatch: { _id: req.body.choiceId } }
+    },
+    {
+      $inc: { 'choices.$.count': 1 },
+      $push: {
+        'choices.$.votes': { userId: req.currentUser._id, voteAt: new Date() }
+      }
+    }
+  )
+    .then(poll => res.json({ poll }))
+    .catch(err => res.status(400).json({ errors: parseErrors(err) }));
 });
 
 export default router;
