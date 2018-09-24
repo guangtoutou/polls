@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 
 import GuestRoute from './routes/GuestRoute';
@@ -9,7 +9,6 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import Polls from './components/Polls';
 import NewPoll from './components/NewPoll';
 import setAuthorizationHeader from './utils/setAuthorizationHeader';
 

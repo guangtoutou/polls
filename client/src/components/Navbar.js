@@ -25,7 +25,7 @@ export default class Navbar extends Component {
   };
 
   guestMenu = () => {
-    const { location, authenticated } = this.props;
+    const { location } = this.props;
 
     return (
       <Container text>
@@ -55,7 +55,7 @@ export default class Navbar extends Component {
   };
 
   userMenu = () => {
-    const { location, authenticated } = this.props;
+    const { location } = this.props;
 
     return (
       <Container text>
@@ -97,7 +97,7 @@ export default class Navbar extends Component {
 
   render() {
     const { menuFixed, activeItem } = this.state;
-    const { location, authenticated } = this.props;
+    const { authenticated } = this.props;
 
     return (
       <div>

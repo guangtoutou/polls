@@ -1,19 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Button,
-  Menu,
-  Container,
-  Visibility,
-  Header,
-  Form,
-  Radio,
-  Icon,
-  Item,
-  Image,
-  Segment,
-  Grid
-} from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Image, Grid } from 'semantic-ui-react';
 import axios from 'axios';
 
 import Poll from './Poll';

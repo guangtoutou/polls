@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Input,
-  Grid,
-  Form,
-  Button,
-  Header,
-  Message,
-  Icon
-} from 'semantic-ui-react';
+import { Input, Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
 import axios from 'axios';

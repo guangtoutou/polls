@@ -1,19 +1,8 @@
 import React, { Component } from 'react';
-import {
-  Input,
-  Grid,
-  Form,
-  Button,
-  Segment,
-  Header,
-  Image,
-  Message
-} from 'semantic-ui-react';
+import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
 import axios from 'axios';
-
-import Navbar from './Navbar';
 import InlineError from '../messages/InlineError';
 
 export default class Signup extends Component {
