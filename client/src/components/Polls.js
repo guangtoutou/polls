@@ -16,38 +16,8 @@ import {
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+import Poll from './Poll';
 const paragraph = <Image src="/images/wireframe/short-paragraph.png" />;
-
-const Poll = ({ poll }) => (
-  <Segment>
-    <Header as="h5">
-      <Icon name="settings" />
-      <Header.Content>
-        Ningning Ni
-        <Header.Subheader style={{ display: 'inline', marginLeft: '1em' }}>
-          @guangtoutou
-        </Header.Subheader>
-        <Header.Subheader>
-          {new Date().toLocaleString('us-EN')}
-        </Header.Subheader>
-      </Header.Content>
-    </Header>
-
-    <Header>{poll.question}</Header>
-
-    <Form>
-      <Form.Field>
-        {poll.choices.map((choice, index) => (
-          <Form.Field key={choice._id} control={Radio} label={choice.title} />
-        ))}
-      </Form.Field>
-      <Button content="Vote" color="blue" basic />
-      <span style={{ color: 'grey', marginLeft: '1em' }}>
-        6 votes . 5 days left
-      </span>
-    </Form>
-  </Segment>
-);
 
 export default class Polls extends Component {
   state = { data: [] };
