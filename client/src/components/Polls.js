@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Image, Grid } from 'semantic-ui-react';
-import axios from 'axios';
 
 import Poll from './Poll';
+import api from '../utils/api';
 const paragraph = <Image src="/images/wireframe/short-paragraph.png" />;
 
 export default class Polls extends Component {
   state = { data: [] };
 
   componentDidMount() {
-    axios
-      .get('http://localhost:8080/polls')
+    api.polls
+      .getPolls()
       .then(res => {
         this.setState({ data: res.data.polls });
       })

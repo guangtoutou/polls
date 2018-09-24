@@ -9,7 +9,7 @@ import {
   Grid
 } from 'semantic-ui-react';
 import Validator from 'validator';
-import axios from 'axios';
+import api from '../utils/api';
 
 const days = Array.from(Array(24).keys()).map(day => ({
   key: day,
@@ -60,8 +60,8 @@ export default class NewPoll extends Component {
   onSubmit = () => {
     this.setState({ loading: true });
 
-    axios
-      .post('http://localhost:8080/polls', {
+    api.polls
+      .newPoll({
         ...this.state.data,
         expiredAt: new Date()
       })

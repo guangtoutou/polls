@@ -14,6 +14,8 @@ import polls from './routes/polls';
 
 dotenv.config();
 const app = express();
+var port = process.env.PORT || 8080;
+
 app.use(cors());
 
 mongoose.Promise = Promise;
@@ -37,4 +39,4 @@ app.get('/', (req, res) => {
 
 app.use('/api', api);
 
-app.listen(8080, () => console.log('running on localhost:8080'));
+app.listen(port, () => console.log(`running on ${port}`));

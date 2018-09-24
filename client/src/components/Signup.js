@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
-import axios from 'axios';
+
 import InlineError from '../messages/InlineError';
+import api from '../utils/api';
 
 export default class Signup extends Component {
   state = {
@@ -27,8 +28,8 @@ export default class Signup extends Component {
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.setState({ loading: true });
-      axios
-        .post('http://localhost:8080/signup', this.state.data)
+      api.user
+        .signup(this.state.data)
         .then(res => {
           this.props.onSignup(res.data.token);
           this.setState({ loading: false });
