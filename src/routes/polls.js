@@ -5,14 +5,38 @@ import { parseString } from 'xml2js';
 import parseErrors from '../utils/parseError';
 import Poll from '../models/Poll';
 
-import mongoose from 'mongoose';
-
 const router = express.Router();
 
 router.use(authenticate);
 
 router.get('/', (req, res) => {
-  Poll.find()
+  Poll.aggregate([
+    {
+      $project: {
+        question: 1,
+        userId: 1,
+        _id: 1,
+        choices: {
+          _id: 1,
+          title: 1,
+          count: 1
+        },
+        totalCount: { $sum: '$choices.count' },
+        voted: {
+          $in: [
+            req.currentUser._id,
+            {
+              $reduce: {
+                input: '$choices.users',
+                initialValue: [],
+                in: { $concatArrays: ['$$value', '$$this'] }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ])
     .then(polls => res.json({ polls }))
     .catch(err => res.status(400).json({ errors: parseErrors(err.errors) }));
 });
@@ -27,12 +51,13 @@ router.post('/vote', (req, res) => {
   Poll.update(
     {
       _id: req.body.pollId,
-      choices: { $elemMatch: { _id: req.body.choiceId } }
+      choices: { $elemMatch: { _id: req.body.choiceId } },
+      'choices.users': { $ne: req.currentUser._id }
     },
     {
       $inc: { 'choices.$.count': 1 },
       $push: {
-        'choices.$.votes': { userId: req.currentUser._id, voteAt: new Date() }
+        'choices.$.users': req.currentUser._id
       }
     }
   )
