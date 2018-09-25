@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Header, Form, Radio, Icon, Segment } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
+
+import api from '../utils/api';
 
 class Poll extends Component {
   state = {
@@ -11,9 +12,8 @@ class Poll extends Component {
 
   onClick = () => {
     this.setState({ loading: true });
-
-    axios
-      .post('http://localhost:8080/polls/vote', {
+    api.polls
+      .vote({
         choiceId: this.state.choiceId,
         pollId: this.props.poll._id
       })

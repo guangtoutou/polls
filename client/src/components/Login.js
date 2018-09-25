@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Input, Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
-import axios from 'axios';
 
 import InlineError from '../messages/InlineError';
+import api from '../utils/api';
 
 export default class Login extends Component {
   state = {
@@ -29,8 +29,8 @@ export default class Login extends Component {
       this.setState({ loading: true });
       console.log(this.state);
 
-      axios
-        .post('http://localhost:8080/login', this.state.data)
+      api.user
+        .login(this.state.data)
         .then(res => {
           this.props.onLogin(res.data.token);
           this.setState({ loading: false });
