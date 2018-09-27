@@ -89,8 +89,6 @@ class App extends Component {
             component={NewPoll}
             authenticated={authenticated}
           />
-
-          <Navbar />
         </Switch>
       </Fragment>
     );
