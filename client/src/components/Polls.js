@@ -9,6 +9,10 @@ export default class Polls extends Component {
   state = { data: [] };
 
   componentDidMount() {
+    this.getPollsList();
+  }
+
+  getPollsList = () => {
     api.polls
       .getPolls()
       .then(res => {
@@ -20,7 +24,7 @@ export default class Polls extends Component {
           loading: false
         })
       );
-  }
+  };
 
   render() {
     const polls = this.state.data;
@@ -31,7 +35,7 @@ export default class Polls extends Component {
       >
         <Grid.Column style={{ maxWidth: 450 }} textAlign="left">
           {polls.map(poll => (
-            <Poll key={poll._id} poll={poll} />
+            <Poll key={poll._id} poll={poll} onVote={this.getPollsList} />
           ))}
         </Grid.Column>
       </Grid>

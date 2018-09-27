@@ -66,7 +66,7 @@ export default class Signup extends Component {
         style={{ height: '100%', padding: '2em' }}
         verticalAlign="middle"
       >
-        <Grid.Column style={{ maxWidth: 450 }}>
+        <Grid.Column style={{ maxWidth: 450, marginTop: '2em' }}>
           <Header as="h2" color="blue" textAlign="center">
             Signup
           </Header>

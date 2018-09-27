@@ -39,6 +39,7 @@ class App extends Component {
   onLogout = () => {
     this.setState({ authenticated: false });
     setAuthorizationHeader();
+    this.props.history.push('/login');
   };
 
   onLogin = token => {
@@ -68,7 +69,12 @@ class App extends Component {
           )}
         />
         <Switch>
-          <Route path="/" exact component={Home} />
+          <UserRoute
+            path="/"
+            exact
+            component={Home}
+            authenticated={authenticated}
+          />
           <GuestRoute
             path="/login"
             exact
