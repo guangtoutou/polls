@@ -15,25 +15,26 @@ import setAuthorizationHeader from './utils/setAuthorizationHeader';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      authenticated: false,
-      username: null,
-      email: null
-    };
-  }
 
-  componentDidlMount() {
     let token = localStorage.getItem('TOKEN');
     if (token) {
       setAuthorizationHeader(token);
+
       const user = jwt.decode(token);
-      this.setState({
-        email: user.email,
-        username: user.username,
+      this.state = {
+        ...user,
         authenticated: true
-      });
+      };
+    } else {
+      this.state = {
+        authenticated: false,
+        username: '',
+        email: ''
+      };
     }
   }
+
+  componentDidMount() {}
 
   onLogout = () => {
     this.setState({ authenticated: false });
@@ -42,6 +43,7 @@ class App extends Component {
 
   onLogin = token => {
     this.setState({ authenticated: true });
+    localStorage.setItem('TOKEN', token);
     setAuthorizationHeader(token);
     const user = jwt.decode(token);
     this.setState({

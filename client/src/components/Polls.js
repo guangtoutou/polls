@@ -25,7 +25,10 @@ export default class Polls extends Component {
   render() {
     const polls = this.state.data;
     return (
-      <Grid textAlign="center" style={{ height: '100%', padding: '2em' }}>
+      <Grid
+        textAlign="center"
+        style={{ height: '100%', padding: '2em', marginTop: '2em' }}
+      >
         <Grid.Column style={{ maxWidth: 450 }} textAlign="left">
           {polls.map(poll => (
             <Poll key={poll._id} poll={poll} />

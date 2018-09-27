@@ -15,9 +15,6 @@ export default class Navbar extends Component {
     this.state = { menuFixed: false, activeItem: 'login' };
   }
 
-  stickTopMenu = () => this.setState({ menuFixed: true });
-  unStickTopMenu = () => this.setState({ menuFixed: false });
-
   logout = () => {
     localStorage.removeItem('TOKEN');
     this.props.onLogout();
@@ -100,17 +97,9 @@ export default class Navbar extends Component {
     const { authenticated } = this.props;
 
     return (
-      <div>
-        <Visibility
-          onBottomPassed={this.stickTopMenu}
-          onBottomVisible={this.unStickTopMenu}
-          once={false}
-        >
-          <Menu pointing secondary fixed={menuFixed ? 'top' : null} borderless>
-            {authenticated ? this.userMenu() : this.guestMenu()}
-          </Menu>
-        </Visibility>
-      </div>
+      <Menu pointing secondary fixed="top" style={{ backgroundColor: 'white' }}>
+        {authenticated ? this.userMenu() : this.guestMenu()}
+      </Menu>
     );
   }
 }
