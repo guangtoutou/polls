@@ -7,6 +7,7 @@ import api from '../utils/api';
 class Poll extends Component {
   state = {
     choiceId: null,
+    disabled: true,
     loading: false
   };
 
@@ -19,7 +20,7 @@ class Poll extends Component {
       })
       .then(res => {
         this.setState({ loading: false });
-        this.props.history.push('/');
+        this.props.onVote();
       })
       .catch(err =>
         this.setState({
@@ -30,7 +31,7 @@ class Poll extends Component {
   };
 
   onSelect = choiceId => {
-    this.setState({ choiceId });
+    this.setState({ choiceId, disabled: false });
   };
 
   pollForm = poll => (
@@ -44,7 +45,13 @@ class Poll extends Component {
           onChange={e => this.onSelect(choice._id)}
         />
       ))}
-      <Button content="Vote" color="blue" basic onClick={this.onClick} />
+      <Button
+        content="Vote"
+        color="blue"
+        basic
+        onClick={this.onClick}
+        disabled={this.state.disabled}
+      />
       <span style={{ color: 'grey', marginLeft: '1em' }}>
         6 votes . 5 days left
       </span>
@@ -63,7 +70,7 @@ class Poll extends Component {
   };
 
   resultBar = (choice, maxCount, totalCount) => {
-    let percentage = parseFloat(choice.count / totalCount) * 100 + '%';
+    let percentage = Math.floor((choice.count / totalCount) * 100) + '%';
     return (
       <Header
         key={choice._id}

@@ -18,7 +18,6 @@ export default class Navbar extends Component {
   logout = () => {
     localStorage.removeItem('TOKEN');
     this.props.onLogout();
-    this.props.history.push('/');
   };
 
   guestMenu = () => {
