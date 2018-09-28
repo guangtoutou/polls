@@ -3,6 +3,7 @@ import { Button, Header, Form, Radio, Icon, Segment } from 'semantic-ui-react';
 import { withRouter } from 'react-router-dom';
 
 import api from '../utils/api';
+import formateDateTime from '../utils/Helpers';
 
 class Poll extends Component {
   state = {
@@ -124,12 +125,12 @@ class Poll extends Component {
         <Header as="h5">
           <Icon name="settings" />
           <Header.Content>
-            Ningning Ni
+            {poll.user.username}
             <Header.Subheader style={{ display: 'inline', marginLeft: '1em' }}>
-              @guangtoutou
+              {poll.user.email}
             </Header.Subheader>
             <Header.Subheader>
-              {new Date().toLocaleString('us-EN')}
+              {poll.createdAt && formateDateTime(poll.createdAt)}
             </Header.Subheader>
           </Header.Content>
         </Header>

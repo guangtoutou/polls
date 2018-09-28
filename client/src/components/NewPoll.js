@@ -98,12 +98,8 @@ export default class NewPoll extends Component {
     console.log(data);
 
     return (
-      <Grid textAlign="center" style={{ height: '100%', padding: '2em' }}>
-        <Grid.Column
-          style={{ maxWidth: 500 }}
-          textAlign="left"
-          style={{ marginTop: '2em' }}
-        >
+      <Grid textAlign="center" style={{ height: '100%', marginTop: '2em' }}>
+        <Grid.Column style={{ maxWidth: '450px' }} textAlign="left">
           <Form loading={loading}>
             <Header>Create Poll</Header>
             <Form.Field

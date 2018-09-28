@@ -12,9 +12,19 @@ router.use(authenticate);
 router.get('/', (req, res) => {
   Poll.aggregate([
     {
+      $lookup: {
+        from: 'users',
+        localField: 'userId',
+        foreignField: '_id',
+        as: 'user'
+      }
+    },
+    {
+      $unwind: '$user'
+    },
+    {
       $project: {
         question: 1,
-        userId: 1,
         _id: 1,
         choices: {
           _id: 1,
@@ -33,7 +43,9 @@ router.get('/', (req, res) => {
               }
             }
           ]
-        }
+        },
+        user: { _id: 1, username: 1, email: 1 },
+        createdAt: 1
       }
     }
   ])

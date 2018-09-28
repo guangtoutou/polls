@@ -33,7 +33,7 @@ export default class Polls extends Component {
         textAlign="center"
         style={{ height: '100%', padding: '2em', marginTop: '2em' }}
       >
-        <Grid.Column style={{ maxWidth: 450 }} textAlign="left">
+        <Grid.Column style={{ maxWidth: '450px' }} textAlign="left">
           {polls.map(poll => (
             <Poll key={poll._id} poll={poll} onVote={this.getPollsList} />
           ))}

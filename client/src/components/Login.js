@@ -60,13 +60,10 @@ export default class Login extends Component {
     return (
       <Grid
         textAlign="center"
-        style={{ height: '100%', padding: '2em' }}
+        style={{ height: '100%', padding: '2em', marginTop: '2em' }}
         verticalAlign="middle"
       >
-        <Grid.Column
-          style={{ maxWidth: 450, marginTop: '2em' }}
-          textAlign="left"
-        >
+        <Grid.Column style={{ maxWidth: '450px' }} textAlign="left">
           <Header as="h2" color="blue" textAlign="center">
             Log-in to your account
           </Header>
