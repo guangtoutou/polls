@@ -8,7 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename="/polls">
     <Route component={App} />
   </BrowserRouter>,
   document.getElementById('root')
