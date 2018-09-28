@@ -16,7 +16,7 @@ const schema = new mongoose.Schema(
     expiredAt: { type: Date },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true }
   },
-  { timestamp: true }
+  { timestamps: true }
 );
 
 export default mongoose.model('polls', schema);
