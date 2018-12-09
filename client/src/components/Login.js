@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Grid, Form, Button, Header, Message } from 'semantic-ui-react';
+import FacebookLogin from 'react-facebook-login';
 import { Link } from 'react-router-dom';
 import Validator from 'validator';
 
@@ -54,6 +55,12 @@ export default class Login extends Component {
     return errors;
   };
 
+  componentClicked = () => {};
+
+  responseFacebook = res => {
+    console.log(res);
+  };
+
   render() {
     const { data, errors, loading } = this.state;
 
@@ -105,6 +112,13 @@ export default class Login extends Component {
           <Message>
             New to us? <Link to="/signup">Sign Up</Link>
           </Message>
+          <FacebookLogin
+            appId="358741874687819"
+            autoLoad={true}
+            fields="name,email,picture"
+            onClick={this.componentClicked}
+            callback={this.responseFacebook}
+          />
         </Grid.Column>
       </Grid>
     );
